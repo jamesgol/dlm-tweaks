@@ -1,14 +1,14 @@
-# Download Monitor Tweaks #
-**Contributors:** jamesgol  
-**Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GAXXM656QPNGY  
-**Tags:** download monitor  
-**Requires at least:** 3.8  
-**Tested up to:** 4.9.4  
-**Stable tag:** 0.01  
-**License:** GPLv3  
+=== Download Monitor Tweaks ===
+Contributors: jamesgol
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GAXXM656QPNGY
+Tags: download monitor
+Requires at least: 3.8
+Tested up to: 4.9.4
+Stable tag: 0.01
+License: GPLv3
 Text Domain: dlm-tweaks
 
-## Description ##
+== Description ==
 
 Some simple tweaks to the Download Monitor plugin.  Some of them are hopefully only temporary till the changes make it into the plugin.
 

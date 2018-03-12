@@ -1,0 +1,7 @@
+{
+  "name": "jamesgol/dlm-tweaks",
+  "version": "0.01",
+  "autoload": {
+    "psr-4": { "DLM_Tweaks\\" : "src/" }
+  }
+}
