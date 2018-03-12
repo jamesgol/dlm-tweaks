@@ -61,17 +61,19 @@ class FileExtension {
 		if ( $download_id > 0 ) {
 			try {
 				$download = download_monitor()->service( 'download_repository' )->retrieve_single( $download_id );
+
+				$best = $this->find_best_version( $download );
+
+				if ( $best ) {
+					$_GET[ 'v' ] = $best->get_id();
+				}
+
 			}catch (\Exception $e) {
 				// download not found
 			}
 
 		}
 
-		$best = $this->find_best_version( $download );
-
-		if ( $best ) {
-			$_GET[ 'v' ] = $best->get_id();
-		}
 
 	}
 
