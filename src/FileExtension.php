@@ -42,6 +42,10 @@ class FileExtension {
 		// Get ID of download
 		$raw_id = sanitize_title( stripslashes( $wp->query_vars[ $this->endpoint ] ) );
 
+		if ( empty( $raw_id ) ) {
+			return;
+		}
+
 		// Find real ID
 		switch ( $this->ep_value ) {
 			case 'slug' :
