@@ -15,8 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'DLM_TWEAKS_VERSION', 0.01 );
 
-require_once 'vendor/autoload.php';
-
 DLM_Tweaks();
 
 function DLM_Tweaks() {
@@ -35,7 +33,9 @@ class DLM_Tweaks {
 	}
 
 	public function setup() {
+		require_once 'src/FileExtension.php';
 		$this->fileextension = new DLM_Tweaks\FileExtension;
+		require_once 'src/Shortcodes.php';
 		$this->shortcodes = new DLM_Tweaks\Shortcodes;
 	}
 
