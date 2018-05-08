@@ -20,6 +20,8 @@ class Shortcodes {
 			add_filter('pre_do_shortcode_tag', array($this, 'catch_attrs'), 10, 4);
 		} else {
 			add_filter( 'dlm_shortcode_download_id', array( $this, 'download_by_name' ), 10, 2 );
+			add_filter( 'dlm_shortcode_downloads_args', array( $this, 'tag_filters' ), 10, 2 );
+
 		}
 	}
 
@@ -72,7 +74,20 @@ class Shortcodes {
 		return $id;
 	}
 
-	public function tag_filters( $args ) {
+	public function tag_filters( $args, $atts = null ) {
+		if ( isset( $atts, $atts['tag'] ) ) {
+			$tag = $atts['tag'];
+		} elseif ( !empty( $this->tag ) ) {
+			$tag = $this->tag;
+		}
+
+		if ( isset( $atts, $atts['exclude_tag'] ) ) {
+			$exclude_tag = $atts['exclude_tag'];
+		} elseif ( !empty( $this->exclude_tag ) ) {
+			$exclude_tag = $this->exclude_tag;
+		}
+
+
 		// First unset any tags in the existing query
 		if ( isset( $args['tax_query'] ) && is_array( $args['tax_query'] ) ) {
 			foreach ( $args['tax_query'] as $key => $value ) {
@@ -83,19 +98,20 @@ class Shortcodes {
 		}
 
 
-		if ( null !== $this->tag ) {
-			$args['tax_query'] = array_merge( $args['tax_query'], $this->format_tags( 'dlm_download_tag', $this->tag ) );
+		if ( !empty( $tag ) ) {
+			$args['tax_query'] = array_merge( $args['tax_query'], $this->format_tags( 'dlm_download_tag', $tag ) );
 		}
 
 		if ( null !== $this->exclude_tag ) {
-			$args['tax_query'] = array_merge( $args['tax_query'], $this->format_tags( 'dlm_download_tag', $this->exclude_tag ) );
+			$args['tax_query'] = array_merge( $args['tax_query'], $this->format_tags( 'dlm_download_tag', $exclude_tag ) );
 		}
 
-		// Return to a clean slate
-		$this->exclude_tag = null;
-		$this->tag = null;
-		remove_filter( 'dlm_shortcode_downloads_args', array( $this, 'tag_filters' ) );
-
+		if ( empty( $atts ) ) {
+			// Return to a clean slate
+			$this->exclude_tag = null;
+			$this->tag = null;
+			remove_filter('dlm_shortcode_downloads_args', array($this, 'tag_filters'));
+		}
 		return $args;
 	}
 
