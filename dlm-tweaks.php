@@ -31,7 +31,9 @@ class DLM_Tweaks {
 	private $modify_permalink;
 
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'setup' ) );
+		if ( defined( 'DLM_VERSION' ) ) {
+			add_action('plugins_loaded', array($this, 'setup'));
+		}
 	}
 
 	public function setup() {
