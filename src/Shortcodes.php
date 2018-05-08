@@ -16,7 +16,11 @@ class Shortcodes {
 	private $post_name = null;
 
 	public function __construct() {
-		add_filter( 'pre_do_shortcode_tag', array( $this, 'catch_attrs' ), 10, 4 );
+		if ( version_compare( DLM_VERSION, '4.0.8' ) ) {
+			add_filter('pre_do_shortcode_tag', array($this, 'catch_attrs'), 10, 4);
+		} else {
+			add_filter( 'dlm_shortcode_download_id', array( $this, 'download_by_name' ), 10, 2 );
+		}
 	}
 
 	public function catch_attrs( $bool, $tag, $attr, $m ) {
@@ -46,16 +50,25 @@ class Shortcodes {
 		return $bool;
 	}
 
-	public function download_by_name( $id ) {
-		if ( empty( $id ) && null !== $this->post_name ) {
-			$posts = get_posts( array( 'name' => $this->post_name, 'post_type' => 'dlm_download', 'numberposts' => 1 ) );
+	public function download_by_name( $id, $atts = null ) {
+		if ( isset( $atts, $atts['name'] ) ) {
+			$post_name = $atts['name'];
+		} elseif ( null !== $this->post_name ) {
+			$post_name = $this->post_name;
+		} else {
+			return $id;
+		}
+		if ( empty( $id ) && !empty( $post_name ) ) {
+			$posts = get_posts( array( 'name' => $post_name, 'post_type' => 'dlm_download', 'numberposts' => 1 ) );
 			if ( !empty( $posts ) ) {
 				$id = $posts[0]->ID;
 			}
 		}
-		remove_filter( 'dlm_shortcode_download_id', array( $this, 'download_by_name' ) );
-		$this->post_name = null;
-
+		if ( empty( $atts ) ) {
+			// Reset local vars if we had to hack our way to the atts
+			remove_filter('dlm_shortcode_download_id', array($this, 'download_by_name'));
+			$this->post_name = null;
+		}
 		return $id;
 	}
 
