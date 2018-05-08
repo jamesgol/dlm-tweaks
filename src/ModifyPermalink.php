@@ -20,7 +20,8 @@ class ModifyPermalink {
 			// Allow modifying slug in editor
 			$args['publicly_queryable'] = true;
 			$args['public'] = true;
-			$args['rewrite'] = true;
+			$args['rewrite'] = array('slug' => $this->endpoint );
+			$args['query_var'] = $this->endpoint;
 		}
 		return $args;
 	}
