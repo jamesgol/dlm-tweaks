@@ -19,6 +19,7 @@ class ModifyPermalink {
 		if ( 'slug' === $this->ep_value ) {
 			// Allow modifying slug in editor
 			$args['publicly_queryable'] = true;
+			$args['public'] = true;
 			$args['rewrite'] = array('slug' => $this->endpoint );
 		}
 		return $args;
