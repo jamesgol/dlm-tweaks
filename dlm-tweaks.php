@@ -41,7 +41,6 @@ class DLM_Tweaks {
 		$this->shortcodes = new DLM_Tweaks\Shortcodes;
 		require_once 'src/ModifyPermalink.php';
 		$this->modify_permalink = new DLM_Tweaks\ModifyPermalink;
-
 	}
 
 	public static function instance() {
