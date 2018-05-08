@@ -31,18 +31,19 @@ class DLM_Tweaks {
 	private $modify_permalink;
 
 	public function __construct() {
-		if ( defined( 'DLM_VERSION' ) ) {
 			add_action('plugins_loaded', array($this, 'setup'));
-		}
 	}
 
 	public function setup() {
-		require_once 'src/FileExtension.php';
-		$this->fileextension = new DLM_Tweaks\FileExtension;
-		require_once 'src/Shortcodes.php';
-		$this->shortcodes = new DLM_Tweaks\Shortcodes;
-		require_once 'src/ModifyPermalink.php';
-		$this->modify_permalink = new DLM_Tweaks\ModifyPermalink;
+		if ( defined( 'DLM_VERSION' ) ) {
+
+			require_once 'src/FileExtension.php';
+			$this->fileextension = new DLM_Tweaks\FileExtension;
+			require_once 'src/Shortcodes.php';
+			$this->shortcodes = new DLM_Tweaks\Shortcodes;
+			require_once 'src/ModifyPermalink.php';
+			$this->modify_permalink = new DLM_Tweaks\ModifyPermalink;
+		}
 	}
 
 	public static function instance() {
