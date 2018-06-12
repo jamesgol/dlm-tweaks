@@ -15,8 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'DLM_TWEAKS_VERSION', 0.01 );
 
-DLM_Tweaks();
-
 function DLM_Tweaks() {
 	return DLM_Tweaks::instance();
 }
@@ -48,7 +46,7 @@ class DLM_Tweaks {
 
 	public static function instance() {
 		if ( !isset( self::$instance ) ) {
-			self::$instance = new Self;
+			self::$instance = new self;
 		}
 		return self::$instance;
 	}

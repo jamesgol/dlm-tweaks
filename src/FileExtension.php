@@ -14,6 +14,47 @@ class FileExtension {
 
 		// Download Monitor hooks 'parse_request' at 0, so we need to get in first
 		add_action( 'parse_request', array( $this, 'parse_request' ), -1 );
+		add_filter( 'dlm_download_get_the_download_link', array( $this, 'download_link' ), 10, 2 );
+		add_filter( 'dlm_download_get_versions', array( $this, 'get_versions' ), 10, 2 );
+		add_filter( 'dlm_version_require_exact', '__return_true' );
+	}
+
+	public function get_versions( $versions, $download ) {
+		if ( isset( $_GET, $_GET['version'] ) ) {
+			// If the user is requesting a specific version, only focus on those
+			foreach ( $versions as $id => $version ) {
+				if ( $version->get_version() !== $_GET['version'] ) {
+	//				unset( $versions[ $id ] );
+				}
+			}
+
+		}
+		return $versions;
+	}
+
+	public function default_extension() {
+		return apply_filters( 'dlm_tweaks_default_extension', 'pdf' );
+	}
+
+	public function extension_preference() {
+		$preference = array( 'pdf', 'docx','doc' );
+		return apply_filter( 'dlm_tweaks_extension_preference', $preference );
+	}
+
+	private function ext_sort( $a, $b ) {
+		// If either is a preferred extension, sort that way
+//		if ( in_array( $a, $this->extension_preference() ) )
+
+		// Otherwise alphabetical
+		return strcasecmp( $a, $b );
+	}
+
+	public function download_link( $link, $version ) {
+		//return apply_filters( 'dlm_download_get_the_download_link', esc_url_raw( $link ), $this, $this->get_version() );
+		$slug = $version->get_slug();
+		$ext = $version->get_version()->get_filetype();
+		$link = str_replace( "/$slug/", "/$slug.$ext/", $link );
+		return $link;
 	}
 
 	public function parse_request() {
@@ -35,7 +76,7 @@ class FileExtension {
 				$wp->query_vars[ $this->endpoint ] = $path_parts['filename'];
 			} else {
 				// Set pdf as the default type
-				$wp->query_vars[ $this->endpoint . '_type' ] = 'pdf';
+				$wp->query_vars[ $this->endpoint . '_type' ] = $this->default_extension();
 			}
 		}
 
@@ -91,7 +132,13 @@ class FileExtension {
 				if ( $type === $version->get_filetype() ) {
 					$matched_type[ $id ] = $version;
 					$version_number = $version->get_version_number();
-					if ( null === $best_version_number || version_compare( $version_number, $best_version_number ) ) {
+					if ( isset( $_GET, $_GET['version'] ) ) {
+						if ( $version_number === $_GET['version'] ) {
+							// If this is the version number requested, quickly return it
+							return $version;
+						}
+					}
+					elseif ( null === $best_version_number || version_compare( $version_number, $best_version_number ) ) {
 						$best_version_number = $version_number;
 						$best_version = $version;
 					}

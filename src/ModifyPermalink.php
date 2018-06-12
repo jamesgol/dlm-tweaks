@@ -22,6 +22,7 @@ class ModifyPermalink {
 			$args['public'] = true;
 			$args['rewrite'] = array('slug' => $this->endpoint );
 			$args['query_var'] = $this->endpoint;
+			$args['has_archive'] = true;
 		}
 		return $args;
 	}
