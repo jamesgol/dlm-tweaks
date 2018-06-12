@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Download Monitor Tweaks
  * Description: Simple tweaks for Download Monitor
- * Version: 0.01
+ * Version: 1.00
  * Author: James Golovich
  * Requires at least: 4.0
  * Tested up to: 4.9

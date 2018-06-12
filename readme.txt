@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: download monitor
 Requires at least: 3.8
 Tested up to: 4.9.4
-Stable tag: 0.01
+Stable tag: 1.00
 License: GPLv3
 Text Domain: dlm-tweaks
 

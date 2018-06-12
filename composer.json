@@ -1,6 +1,6 @@
 {
   "name": "jamesgol/dlm-tweaks",
-  "version": "0.01",
+  "version": "1.00",
   "autoload": {
     "files": [ "dlm-tweaks.php" ]
   }
