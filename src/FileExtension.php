@@ -17,6 +17,17 @@ class FileExtension {
 		add_filter( 'dlm_download_get_the_download_link', array( $this, 'download_link' ), 10, 2 );
 		add_filter( 'dlm_download_get_versions', array( $this, 'get_versions' ), 10, 2 );
 		add_filter( 'dlm_version_require_exact', '__return_true' );
+		add_filter( 'post_type_link', array( $this, 'post_type_link' ), 10, 2 );
+
+	}
+
+	public function post_type_link( $post_link, $post ) {
+		if ( $post->post_type === 'dlm_download' ) {
+			// Most download links look terrible with a trailing slash and browsers can get confused by it
+			$post_link = untrailingslashit( $post_link );
+		}
+		return $post_link;
+
 	}
 
 	public function get_versions( $versions, $download ) {
@@ -53,7 +64,7 @@ class FileExtension {
 		//return apply_filters( 'dlm_download_get_the_download_link', esc_url_raw( $link ), $this, $this->get_version() );
 		$slug = $version->get_slug();
 		$ext = $version->get_version()->get_filetype();
-		$link = str_replace( "/$slug/", "/$slug.$ext/", $link );
+		$link = str_replace( "/$slug/", "/$slug.$ext", $link );
 		return $link;
 	}
 
